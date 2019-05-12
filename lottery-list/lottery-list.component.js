@@ -7,6 +7,9 @@ angular.
     templateUrl: 'lottery-list/lottery-list.template.html',
     controller: ['$http', function lotteryListController($http) {
       var self = this;
+      self.ogList = [];
+      self.animal = [];
+
       self.orderPropList = [
         { id: 0, name: 'date', description: 'mais antigos' },
         { id: 1, name: '-date', description: 'mais recentes' }];
@@ -21,15 +24,51 @@ angular.
       self.selectedOption = self.orderPropList[0]
       self.selectedOption2 = self.vizList[0]
 
-
+      self.searchSequence = searchSequence;
 
 
       $http.get('lotteries/lotteries.json').then((response) => {
 
         response.data.forEach(it => parseElement(it));
 
-        self.lotterys = response.data;
+        self.lotteries = response.data;
+        self.animal = response.data;
+        self.ogList = response.data;
+
       });
+
+      function searchSequence(list, seq) {
+        if (!seq) {
+          self.animal = self.ogList;
+          return list;
+        }
+
+        let arr = [];
+        let seq2 = [];
+
+        if (seq.includes(' ')) {
+          seq2 = seq.split(' ');
+        }
+        seq = seq2.map(it => parseInt(it))
+
+
+        for (let i = 0; i < list.length; i++) {
+          let contains = true;
+          for (let j = 0; j < seq.length; j++) {
+            if (!list[i].arr_sorted.includes(seq[j])) {
+              contains = false;
+              break;
+            }
+          }
+          if (contains) {
+            arr.push(list[i])
+          }
+
+        }
+        console.log(arr.length)
+        self.animal = arr;
+        return arr;
+      }
 
       function parseElement(it) {
         it.arr = [];
@@ -69,7 +108,7 @@ angular.
         it.arr_sorted = it.arr.sort((a, b) => a - b);
 
 
-        
+
         it.v1s = []
         it.v2s = []
         it.v3s = []
@@ -85,7 +124,7 @@ angular.
         for (i = 10; i < 15; i++) {
           it.v3s.push(it.arr_sorted[i]);
         }
-          
+
 
 
 

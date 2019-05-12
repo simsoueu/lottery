@@ -14,7 +14,8 @@
       <div class="sidebar-sticky">
         <p>
           Buscar:
-          <input class="form-control" ng-model="$ctrl.query" />
+          <input class="form-control" ng-change="$ctrl.searchSequence($ctrl.lotteries, $ctrl.query)"
+            ng-model="$ctrl.query" />
         </p>
 
 
@@ -26,31 +27,47 @@
 
           </select>
 
-
-          <form name="myForm2">
-            Visualizar em ordem:
-            <select name="mySelect2" id="mySelect2" class="custom-select" style="margin-bottom: 20px"
-              ng-options="option.description for option in $ctrl.vizList track by option.id"
-              ng-model="$ctrl.selectedOption2">
-            </select>
-          </form>
-
+        </form>
+        <form name="myForm2">
+          Visualizar em ordem:
+          <select name="mySelect2" id="mySelect2" class="custom-select" style="margin-bottom: 20px"
+            ng-options="option.description for option in $ctrl.vizList track by option.id"
+            ng-model="$ctrl.selectedOption2">
+          </select>
         </form>
 
-
+        <div ng-if="$ctrl.animal.length > 0">
+          {{$ctrl.animal.length}} concursos encontrados.
+        </div>
+        <div ng-if="$ctrl.animal.length == 0">
+          nenhum resultado encontrado.
+        </div>
       </div>
 
     </div>
     <div class="col-md-10">
       <!--Body content-->
 
-      <ul class="list-group lotterys">
-        <li ng-repeat="lottery in $ctrl.lotterys | filter:$ctrl.query | orderBy: $ctrl.selectedOption.name"
-          class="list-group-item">
+      <ul class="list-group lotteries">
+        <li ng-repeat="lottery in $ctrl.animal | orderBy: $ctrl.selectedOption.name" class="list-group-item">
+          <p>
+            <a href="#!/lotteries/Concurso{{lottery.Concurso}}">Concurso {{lottery.Concurso}}</a>
+            <br> Data: {{lottery.Data}}
+            <button ng-click="wow=!wow" class="btn btn-sm btn-outline-primary" style="float: right">detalhes</button>
+          </p>
 
-          <a href="#!/lotterys/Concurso{{lottery.Concurso}}">Concurso {{lottery.Concurso}}</a>
-          <br> Data: {{lottery.Data}} <br>
-          
+          <div class="alert alert-warning alert-dismissible fade show" role="alert" ng-if="wow">
+
+            <p><strong>15 acertos</strong><br>{{lottery.ganhadores_15_numeros}} apostas ganhadoras.</p>
+            <p><strong>14 acertos</strong><br>{{lottery.ganhadores_14_numeros}} apostas ganhadoras.</p>
+            <p><strong>13 acertos</strong><br>{{lottery.ganhadores_13_numeros}} apostas ganhadoras.</p>
+            <p><strong>12 acertos</strong><br>{{lottery.ganhadores_12_numeros}} apostas ganhadoras.</p>
+            <p><strong>11 acertos</strong><br>{{lottery.ganhadores_11_numeros}} apostas ganhadoras.</p>
+
+          </div>
+
+
+
           <div ng-if="$ctrl.selectedOption2.name == 'arr'" class="container-numbers">
             <span class="box" ng-repeat="ball in lottery.v1;">
               {{ball}}
@@ -68,19 +85,19 @@
 
 
           <div ng-if="$ctrl.selectedOption2.name == 'cres'" class="container-numbers">
-              <span class="box" ng-repeat="ball in lottery.v1s;">
-                {{ball}}
-              </span>
-              <br>
-              <span class="box" ng-repeat="ball in lottery.v2s;">
-                {{ball}}
-              </span>
-              <br>
-              <span class="box" ng-repeat="ball in lottery.v3s;">
-                {{ball}}
-              </span>
-              <br>
-            </div>
+            <span class="box" ng-repeat="ball in lottery.v1s;">
+              {{ball}}
+            </span>
+            <br>
+            <span class="box" ng-repeat="ball in lottery.v2s;">
+              {{ball}}
+            </span>
+            <br>
+            <span class="box" ng-repeat="ball in lottery.v3s;">
+              {{ball}}
+            </span>
+            <br>
+          </div>
 
         </li>
       </ul>
