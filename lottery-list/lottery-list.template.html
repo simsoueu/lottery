@@ -1,0 +1,90 @@
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a class="nav-link" href="#">Sign out</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <p>
+          Buscar:
+          <input class="form-control" ng-model="$ctrl.query" />
+        </p>
+
+
+        <form name="myForm">
+          <label for="mySelect">Ordenar sorteios:</label><br>
+          <select name="mySelect" id="mySelect" class="custom-select" style="margin-bottom: 20px"
+            ng-options="option.description for option in $ctrl.orderPropList track by option.id"
+            ng-model="$ctrl.selectedOption">
+
+          </select>
+
+
+          <form name="myForm2">
+            Visualizar em ordem:
+            <select name="mySelect2" id="mySelect2" class="custom-select" style="margin-bottom: 20px"
+              ng-options="option.description for option in $ctrl.vizList track by option.id"
+              ng-model="$ctrl.selectedOption2">
+            </select>
+          </form>
+
+        </form>
+
+
+      </div>
+
+    </div>
+    <div class="col-md-10">
+      <!--Body content-->
+
+      <ul class="list-group lotterys">
+        <li ng-repeat="lottery in $ctrl.lotterys | filter:$ctrl.query | orderBy: $ctrl.selectedOption.name"
+          class="list-group-item">
+
+          <a href="#!/lotterys/Concurso{{lottery.Concurso}}">Concurso {{lottery.Concurso}}</a>
+          <br> Data: {{lottery.Data}} <br>
+          
+          <div ng-if="$ctrl.selectedOption2.name == 'arr'" class="container-numbers">
+            <span class="box" ng-repeat="ball in lottery.v1;">
+              {{ball}}
+            </span>
+            <br>
+            <span class="box" ng-repeat="ball in lottery.v2;">
+              {{ball}}
+            </span>
+            <br>
+            <span class="box" ng-repeat="ball in lottery.v3;">
+              {{ball}}
+            </span>
+            <br>
+          </div>
+
+
+          <div ng-if="$ctrl.selectedOption2.name == 'cres'" class="container-numbers">
+              <span class="box" ng-repeat="ball in lottery.v1s;">
+                {{ball}}
+              </span>
+              <br>
+              <span class="box" ng-repeat="ball in lottery.v2s;">
+                {{ball}}
+              </span>
+              <br>
+              <span class="box" ng-repeat="ball in lottery.v3s;">
+                {{ball}}
+              </span>
+              <br>
+            </div>
+
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>
